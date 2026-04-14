@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import { useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation"
@@ -37,12 +38,12 @@ export function Navbar() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="/features" className="text-black text-lg font-semibold transition duration-300 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(236,72,153,0.8)]">Features</a>
-          <a href="/voices" className="text-black text-lg  font-semibold ttransition duration-300 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(236,72,153,0.8)]">Voices</a>
-          <a href="/industries" className="flex items-center text-black  text-lg font-semibold transition duration-300 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(236,72,153,0.8)]">
+          <Link href="/features" className="text-black text-lg font-semibold transition duration-300 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(236,72,153,0.8)]">Features</Link>
+          <Link href="/voices" className="text-black text-lg  font-semibold ttransition duration-300 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(236,72,153,0.8)]">Voices</Link>
+          <Link href="/industries" className="flex items-center text-black  text-lg font-semibold transition duration-300 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(236,72,153,0.8)]">
             Industries
-          </a>
-          <a href="/pricing" className="text-black text-lg font-semibold transition duration-300 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(236,72,153,0.8)]">Pricing</a>
+          </Link>
+          <Link href="/pricing" className="text-black text-lg font-semibold transition duration-300 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(236,72,153,0.8)]">Pricing</Link>
         </nav>
 
         {/* Auth + Mobile Menu Button */}
@@ -77,10 +78,10 @@ export function Navbar() {
         md:hidden
         ">
           <nav className="px-6 py-4 space-y-4">
-            <a href="/" className="block text-white font-semibold hover:underline">Home</a>
-            <a href="/features" className="block text-white font-semibold hover:underline">Features</a>
-            <a href="/industries" className="block text-white font-semibold hover:underline">Industries</a>
-            <a href="/pricing" className="block text-white font-semibold hover:underline">Pricing</a>
+            <Link href="/" className="block text-white font-semibold hover:underline">Home</Link>
+            <Link href="/features" className="block text-white font-semibold hover:underline">Features</Link>
+            <Link href="/industries" className="block text-white font-semibold hover:underline">Industries</Link>
+            <Link href="/pricing" className="block text-white font-semibold hover:underline">Pricing</Link>
           </nav>
         </div>
       )}

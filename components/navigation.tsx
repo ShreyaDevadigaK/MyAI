@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
 
@@ -17,23 +18,23 @@ export function Navigation() {
 
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center space-x-8">
-        <a href="/" className="text-gray-700 hover:text-gray-900">
+        <Link href="/" className="text-gray-700 hover:text-gray-900">
           Home
-        </a>
-        <a href="/features" className="text-gray-700 hover:text-gray-900">
+        </Link>
+        <Link href="/features" className="text-gray-700 hover:text-gray-900">
           Features
-        </a>
+        </Link>
         <div className="relative group">
-          <a href="#" className="text-gray-700 hover:text-gray-900 flex items-center">
+          <Link href="#" className="text-gray-700 hover:text-gray-900 flex items-center">
             Industries
             <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
-          </a>
+          </Link>
         </div>
-        <a href="/pricing" className="text-gray-700 hover:text-gray-900">
+        <Link href="/pricing" className="text-gray-700 hover:text-gray-900">
           Pricing
-        </a>
+        </Link>
       </nav>
 
       <div className="flex items-center space-x-4">
@@ -52,18 +53,19 @@ export function Navigation() {
       {isOpen && (
         <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-200 md:hidden">
           <nav className="px-6 py-4 space-y-4">
-            <a href="/" className="block text-gray-700 hover:text-gray-900">
+          <nav className="px-6 py-4 space-y-4">
+            <Link href="/" className="block text-gray-700 hover:text-gray-900">
               Home
-            </a>
-            <a href="/features" className="block text-gray-700 hover:text-gray-900">
+            </Link>
+            <Link href="/features" className="block text-gray-700 hover:text-gray-900">
               Features
-            </a>
-            <a href="#" className="block text-gray-700 hover:text-gray-900">
+            </Link>
+            <Link href="#" className="block text-gray-700 hover:text-gray-900">
               Industries
-            </a>
-            <a href="/pricing" className="block text-gray-700 hover:text-gray-900">
+            </Link>
+            <Link href="/pricing" className="block text-gray-700 hover:text-gray-900">
               Pricing
-            </a>
+            </Link>
             <div className="pt-4 space-y-2">
               <Button variant="ghost" className="w-full text-gray-700">
                 Login

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Ghost } from 'lucide-react';
 
-function page() {
+function BlogPage() {
   const router = useRouter()
 
 
@@ -129,4 +129,4 @@ function page() {
   )
 }
 
-export default page
+export default BlogPage

@@ -169,11 +169,11 @@ export default function DemoPage() {
     if (msg.toLowerCase().includes("appointment")) {
       return "Of course! What day works best for you?";
     } else if (msg.toLowerCase().includes("hi") || msg.toLowerCase().includes("hello")) {
-      return "Hello! I’m MYAI, your virtual receptionist. How can I help today?";
+      return "Hello! I&apos;m MYAI, your virtual receptionist. How can I help today?";
     } else if (msg.toLowerCase().includes("tomorrow")) {
       return "Perfect! Here are some available slots:";
     }
-    return "Got it! I’ll help you with that.";
+    return "Got it! I&apos;ll help you with that.";
   };
 
   const sendMessage = () => {
@@ -257,12 +257,12 @@ export default function DemoPage() {
                 <div className="flex-1 p-4 space-y-3 overflow-y-auto bg-purple-50">
                   <div className="flex justify-start message-animate">
                     <div className="bg-white border border-purple-200 px-3 py-2 rounded-lg text-sm text-gray-800 shadow-sm">
-                      Hello! I’m MYAI, your receptionist.
+                      Hello! I&apos;m MYAI, your receptionist.
                     </div>
                   </div>
                   <div className="flex justify-end message-animate" style={{ animationDelay: "0.4s" }}>
                     <div className="bg-purple-600 text-white px-3 py-2 rounded-lg text-sm shadow-sm">
-                      Hi, I’d like to book an appointment.
+                      Hi, I&apos;d like to book an appointment.
                     </div>
                   </div>
                   <div className="flex justify-start message-animate" style={{ animationDelay: "0.8s" }}>
@@ -376,7 +376,7 @@ export default function DemoPage() {
               Ready to Experience the Difference?
             </h2>
             <p className="text-lg sm:text-xl mb-8 text-gray-300 animate-fade-in-up animation-delay-100">
-              See how MYAI's features work together to transform your phone system in a personalized demo.
+              See how MYAI&apos;s features work together to transform your phone system in a personalized demo.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up animation-delay-200">

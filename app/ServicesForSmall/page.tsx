@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { ComprehensiveFooter } from '@/components/ComprehensiveFooter';
 
-function page() {
+function ServicesForSmallPage() {
   const { user } = useUser();
   const router = useRouter()
   return (
@@ -114,4 +114,4 @@ function page() {
   )
 }
 
-export default page
+export default ServicesForSmallPage

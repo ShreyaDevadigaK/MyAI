@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
   return res
 }
 
-async function createOrGetUserSpreadsheet(auth: any, userId: string): Promise<string> {
+async function createOrGetUserSpreadsheet(auth: unknown, userId: string): Promise<string> {
   console.log('Attempting to create or get spreadsheet for user:', userId);
   try {
     console.log('Creating spreadsheet for user:', userId);

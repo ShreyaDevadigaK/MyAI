@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { PricingTable } from '@clerk/nextjs';
 import { ArrowRight } from 'lucide-react';
 
-function page() {
+function SubscriptionPlanPage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -133,4 +133,4 @@ function page() {
   );
 }
 
-export default page;
+export default SubscriptionPlanPage;

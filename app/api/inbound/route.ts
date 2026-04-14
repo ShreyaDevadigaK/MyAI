@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     return new NextResponse(twiml.toString(), {
       headers: { 'Content-Type': 'text/xml' },
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Inbound handler error:', err);
     const twiml = new twilio.twiml.VoiceResponse();
     twiml.say('An unexpected error occurred. Please try again later.');

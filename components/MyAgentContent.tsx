@@ -328,7 +328,7 @@ export default function MyAgentContent() {
         >
           <h3 className="text-2xl font-bold text-purple-900 text-center mb-4">Test Your Agent</h3>
           <p className="text-sm text-purple-700 text-center mb-6">
-            Select how you would like to test your agent's voice and functionality.
+            Select how you would like to test your agent&apos;s voice and functionality.
           </p>
           <div className="space-y-3">
             <button 

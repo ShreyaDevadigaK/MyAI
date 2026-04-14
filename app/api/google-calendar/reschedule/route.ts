@@ -155,11 +155,12 @@ export async function POST(request: NextRequest) {
       smsSent: !!customerPhone
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Reschedule error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json({ 
       error: 'Failed to reschedule event',
-      details: error.message 
+      details: errorMessage 
     }, { status: 500 });
   }
 }

@@ -21,7 +21,7 @@ async function parseJsonResponse(response: Response) {
   }
 }
 
-export async function saveActivityToDatabase(userId: string, activity: any) {
+export async function saveActivityToDatabase(userId: string, activity: unknown) {
   try {
     const response = await fetch('/api/sheet/activities-db', {
       method: 'POST',
@@ -43,7 +43,7 @@ export async function saveActivityToDatabase(userId: string, activity: any) {
 
     const data = await parseJsonResponse(response)
     return data.data
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Failed to save activity to database:', err)
     return null
   }
@@ -66,7 +66,7 @@ export async function fetchUserActivities(userId: string): Promise<Activity[]> {
 
     const data = await parseJsonResponse(response)
     return data.data || []
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Failed to fetch activities from database:', err)
     return []
   }

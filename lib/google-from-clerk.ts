@@ -13,7 +13,7 @@ export async function getGoogleAuthFromClerk(origin: string) {
   if (!userId) throw new Error('Unauthenticated')
   const client = await clerkClient()
   const user = await client.users.getUser(userId)
-  const tokens: any = (user.privateMetadata as any)?.googleTokens
+  const tokens = (user.privateMetadata as { googleTokens?: unknown })?.googleTokens as { access_token?: string } | undefined;
   if (!tokens?.access_token) throw new Error('Google not connected')
   oauth2.setCredentials(tokens)
   return oauth2
@@ -34,10 +34,10 @@ export async function getUserSpreadsheetId(): Promise<string | undefined> {
   if (!userId) return undefined
   const client = await clerkClient()
   const user = await client.users.getUser(userId)
-  return (user.privateMetadata as any)?.userSpreadsheetId as string | undefined
+  return (user.privateMetadata as { userSpreadsheetId?: string })?.userSpreadsheetId;
 }
 
-export async function validateSpreadsheetExists(sheets: any, spreadsheetId: string): Promise<boolean> {
+export async function validateSpreadsheetExists(sheets: { spreadsheets: any }, spreadsheetId: string): Promise<boolean> {
   try {
     await sheets.spreadsheets.get({ spreadsheetId })
     return true
@@ -47,7 +47,7 @@ export async function validateSpreadsheetExists(sheets: any, spreadsheetId: stri
   }
 }
 
-export async function createSpreadsheet(sheets: any, title: string): Promise<string> {
+export async function createSpreadsheet(sheets: { spreadsheets: any }, title: string): Promise<string> {
   const resource = {
     properties: {
       title: title,
@@ -57,12 +57,12 @@ export async function createSpreadsheet(sheets: any, title: string): Promise<str
   return response.data.spreadsheetId;
 }
 
-export async function validateSheetExists(sheets: any, spreadsheetId: string, sheetName: string): Promise<boolean> {
+export async function validateSheetExists(sheets: { spreadsheets: any }, spreadsheetId: string, sheetName: string): Promise<boolean> {
   try {
     const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId })
     const sheetsList = spreadsheet.data.sheets || []
     
-    return sheetsList.some((sheet: any) => 
+    return sheetsList.some((sheet: { properties?: { title?: string } }) => 
       sheet.properties?.title?.toLowerCase() === sheetName.toLowerCase()
     )
   } catch (error) {
@@ -71,12 +71,12 @@ export async function validateSheetExists(sheets: any, spreadsheetId: string, sh
   }
 }
 
-export async function listAvailableSheets(sheets: any, spreadsheetId: string): Promise<string[]> {
+export async function listAvailableSheets(sheets: { spreadsheets: any }, spreadsheetId: string): Promise<string[]> {
   try {
     const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId })
     const sheetsList = spreadsheet.data.sheets || []
     
-    return sheetsList.map((sheet: any) => sheet.properties?.title || 'Untitled Sheet')
+    return sheetsList.map((sheet: { properties?: { title?: string } }) => sheet.properties?.title || 'Untitled Sheet')
   } catch (error) {
     console.error('Error listing sheets:', error)
     return []

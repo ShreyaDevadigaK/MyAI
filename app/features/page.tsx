@@ -169,7 +169,7 @@ const MyAiPage = () => {
                   </span>
                 </h1>
                 <p className="text-lg lg:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0 animate-fade-in-up animation-delay-200">
-                  Our AI-powered receptionist seamlessly integrates into your workflow, providing instant support, capturing every lead, and elevating your brand's presence 24/7.
+                  Our AI-powered receptionist seamlessly integrates into your workflow, providing instant support, capturing every lead, and elevating your brand&apos;s presence 24/7.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up animation-delay-300">
                   <Button size="lg" variant="outline" className="bg-primary hover:bg-purple-700 text-white dark:bg-primary dark:hover:bg-purple-600 px-8 py-3 rounded-full shadow-lg transition-transform transform hover:scale-105"

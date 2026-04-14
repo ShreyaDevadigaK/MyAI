@@ -2,6 +2,7 @@
 
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Play } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Navbar } from '@/components/Navbar'
@@ -112,7 +113,7 @@ export default function HomePage() {
                       ][i]}
                     </p>
                     {i === 0 && (
-                      <a href="/sign-up?redirect_url=/" className="text-sm text-indigo-400 hover:underline font-medium">Sign up →</a>
+                      <Link href="/sign-up?redirect_url=/" className="text-sm text-indigo-400 hover:underline font-medium">Sign up →</Link>
                     )}
 
                   </div>
@@ -132,7 +133,7 @@ export default function HomePage() {
                 </span>
                 <br />
                 <span className="bg-gradient-to-r from-[#9d53c8] via-[#E879F9] to-[#7e21a8] bg-clip-text text-transparent">
-                  That Answers Every Call You Can't
+                  That Answers Every Call You Can&apos;t
                 </span>
               </h2>
             </div>
@@ -182,7 +183,7 @@ export default function HomePage() {
                   <p className="text-gray-600 text-sm leading-relaxed">
                     We LOVE it, Its like set it and forget it. I can load all the questions that we get asked, and have
                     it automated. so easy to work it, And very responsive. The MYAI Support is amazing as well,
-                    they've kept in contact and are there every step of the way.
+                    they&apos;ve kept in contact and are there every step of the way.
                   </p>
                 </div>
 
@@ -219,7 +220,7 @@ export default function HomePage() {
                     Highly Recommend MYAI! MYAI was so easy to set up and it is amazing the interaction
                     created between the attendant and the caller. From a price point perspective, it has tremendous
                     value and has taken on a very labor-intensive part of our businesses. The call transcript via text
-                    and email insures we don't miss calls.
+                    and email insures we don&apos;t miss calls.
                   </p>
                 </div>
 
@@ -236,7 +237,7 @@ export default function HomePage() {
                   </div>
                   <p className="text-gray-600 text-sm leading-relaxed">
                     Amazing customer service saves me so much time. Amazing customer service saves me so much time. I
-                    needed an area code that wasn't available, within minutes they found a solution and had that number.
+                    needed an area code that wasn&apos;t available, within minutes they found a solution and had that number.
                     Wow, efficient and a huge logistic help to our company.
                   </p>
                 </div>

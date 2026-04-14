@@ -1,4 +1,5 @@
 import { Facebook, Twitter, Linkedin } from "lucide-react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 
@@ -14,11 +15,11 @@ export function ComprehensiveFooter() {
             <div>
               <h3 className="text-lg font-bold mb-6 text-white">Company</h3>
               <ul className="space-y-4">
-                <li><a href="/ServicesForSmall" className="text-white/80 hover:text-white">Answering Service for Small Business</a></li>
-                <li><a href="/Afterhours" className="text-white/80 hover:text-white">After Hours Phone Answering Service</a></li>
-                <li><a href="#faq" className="text-white/80 hover:text-white">FAQs</a></li>
-                <li><a href="/About" className="text-white/80 hover:text-white">About Us</a></li>
-                <li><a href="#contact" className="text-white/80 hover:text-white">Contact Us</a></li>
+                <li><Link href="/ServicesForSmall" className="text-white/80 hover:text-white">Answering Service for Small Business</Link></li>
+                <li><Link href="/Afterhours" className="text-white/80 hover:text-white">After Hours Phone Answering Service</Link></li>
+                <li><Link href="#faq" className="text-white/80 hover:text-white">FAQs</Link></li>
+                <li><Link href="/About" className="text-white/80 hover:text-white">About Us</Link></li>
+                <li><Link href="#contact" className="text-white/80 hover:text-white">Contact Us</Link></li>
               </ul>
             </div>
 
@@ -26,11 +27,11 @@ export function ComprehensiveFooter() {
             <div>
               <h3 className="text-lg font-bold mb-6 text-white">Resources</h3>
               <ul className="space-y-4">
-                <li><a href="/blog" className="text-white/80 hover:text-white">What is an AI Receptionist?</a></li>
-                <li><a href="/meet" className="text-white/80 hover:text-white">Schedule a Demo</a></li>
-                <li><a href="/voices" className="text-white/80 hover:text-white">AI Receptionist Voices</a></li>
-                <li><a href="/blog" className="text-white/80 hover:text-white">Blog</a></li>
-                <li><a href="/sign-in" className="text-white/80 hover:text-white">Login</a></li>
+                <li><Link href="/blog" className="text-white/80 hover:text-white">What is an AI Receptionist?</Link></li>
+                <li><Link href="/meet" className="text-white/80 hover:text-white">Schedule a Demo</Link></li>
+                <li><Link href="/voices" className="text-white/80 hover:text-white">AI Receptionist Voices</Link></li>
+                <li><Link href="/blog" className="text-white/80 hover:text-white">Blog</Link></li>
+                <li><Link href="/sign-in" className="text-white/80 hover:text-white">Login</Link></li>
               </ul>
             </div>
 
@@ -38,12 +39,12 @@ export function ComprehensiveFooter() {
             <div>
               <h3 className="text-lg font-bold mb-6 text-white">Industries</h3>
               <ul className="space-y-4">
-                <li><a href="/industries/hvac" className="text-white/80 hover:text-white">HVAC Industry Answering Service</a></li>
-                 <li><a href="/industries/restaurants" className="text-white/80 hover:text-white">Restaurant Answering Service</a></li>
-                 <li><a href="/industries/plumbingservices" className="text-white/80 hover:text-white">Plumbing Industry Answering Service</a></li>
-                <li><a href="/industries/law-firms" className="text-white/80 hover:text-white">Law Firm Answering Service</a></li>
-                <li><a href="/industries/cleaning-companies" className="text-white/80 hover:text-white">Cleaning Company Answering Service</a></li>
-                <li><a href="/industries" className="text-white/80 hover:text-white">View All Industries</a></li>
+                <li><Link href="/industries/hvac" className="text-white/80 hover:text-white">HVAC Industry Answering Service</Link></li>
+                 <li><Link href="/industries/restaurants" className="text-white/80 hover:text-white">Restaurant Answering Service</Link></li>
+                 <li><Link href="/industries/plumbingservices" className="text-white/80 hover:text-white">Plumbing Industry Answering Service</Link></li>
+                <li><Link href="/industries/law-firms" className="text-white/80 hover:text-white">Law Firm Answering Service</Link></li>
+                <li><Link href="/industries/cleaning-companies" className="text-white/80 hover:text-white">Cleaning Company Answering Service</Link></li>
+                <li><Link href="/industries" className="text-white/80 hover:text-white">View All Industries</Link></li>
               </ul>
             </div>
 

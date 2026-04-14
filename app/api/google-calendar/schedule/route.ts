@@ -378,9 +378,10 @@ export async function POST(request: NextRequest) {
       end,
       sms_status: smsStatus,
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Schedule API error:", error)
-    return NextResponse.json({ error: error.message || 'Scheduling failed' }, { status: 500 })
+    const errorMessage = error instanceof Error ? error.message : 'Scheduling failed'
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 

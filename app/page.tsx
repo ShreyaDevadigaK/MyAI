@@ -246,7 +246,7 @@ export default function HomePage() {
                   The Business Phone System
                 </span>
                 <br />
-                <span className="text-foreground">That Answers Every Call You Can't</span>
+                <span className="text-foreground">That Answers Every Call You Can&apos;t</span>
               </h2>
             </div>
 
@@ -265,7 +265,7 @@ export default function HomePage() {
                 {
                   percent: "80%",
                   description:
-                    "of callers don't leave a voicemail, resulting in countless lost opportunities for businesses.",
+                    "of callers don&apos;t leave a voicemail, resulting in countless lost opportunities for businesses.",
                   icon: <Users className="h-8 w-8 text-secondary" />,
                 },
               ].map(({ percent, description, icon }, i) => (
@@ -314,7 +314,7 @@ export default function HomePage() {
                     name: "Corner Auto",
                     initials: "CA",
                     rating: 5,
-                    text: "We LOVE it, Its like set it and forget it. I can load all the questions that we get asked, and have it automated. so easy to work it, And very responsive. The MYAI Support is amazing as well, they've kept in contact and are there every step of the way.",
+                    text: "We LOVE it, It&apos;s like set it and forget it. I can load all the questions that we get asked, and have it automated. so easy to work it, And very responsive. The MYAI Support is amazing as well, they&apos;ve kept in contact and are there every step of the way.",
                     bgColor: "bg-gradient-to-br from-primary to-primary/80",
                   },
                   {
@@ -335,7 +335,7 @@ export default function HomePage() {
                     name: "Martin Hinshaw",
                     initials: "MH",
                     rating: 5,
-                    text: "Amazing customer service saves me so much time. I needed an area code that wasn't available, within minutes they found a solution and had that number. Wow, efficient and a huge logistic help to our company.",
+                    text: "Amazing customer service saves me so much time. I needed an area code that wasn&apos;t available, within minutes they found a solution and had that number. Wow, efficient and a huge logistic help to our company.",
                     bgColor: "bg-gradient-to-br from-secondary to-accent",
                   },
                 ].map((testimonial, i) => (
@@ -394,7 +394,7 @@ export default function HomePage() {
                     name: "Marcela Braka",
                     initials: "MB",
                     rating: 5,
-                    text: "Outstanding AI receptionist service. It's like having a full-time receptionist at a fraction of the cost. Highly recommend to any business owner.",
+                    text: "Outstanding AI receptionist service. It&apos;s like having a full-time receptionist at a fraction of the cost. Highly recommend to any business owner.",
                     bgColor: "bg-gradient-to-br from-orange-500 to-orange-600",
                   },
                 ].map((testimonial, i) => (

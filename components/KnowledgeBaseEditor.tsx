@@ -66,7 +66,7 @@ export default function KnowledgeBaseEditor() {
       {/* Buttons */}
       <div>
         
-        <p className="text-sm text-gray-600 mb-4">Manage your agent's knowledge sources</p>
+        <p className="text-sm text-gray-600 mb-4">Manage your agent&apos;s knowledge sources</p>
 
         <div className="flex gap-3 mb-4">
           <button

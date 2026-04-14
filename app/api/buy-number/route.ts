@@ -72,7 +72,7 @@ export async function POST(request: Request) {
 
   try {
     const toolBaseUrl = (process.env.toolBaseUrl || process.env.ULTRAVOX_TOOL_BASE_URL || '').replace(/\/$/, '')
-    const params: Record<string, any> = {
+    const params: Record<string, string | boolean> = {
       addressSid,
       bundleSid,
       voiceUrl: `${toolBaseUrl}/api/inbound`,
@@ -91,12 +91,14 @@ export async function POST(request: Request) {
       success: true,
       purchasedNumber: incomingPhoneNumber,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error buying Twilio number:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStatus = (error as { status?: number }).status || 500;
     return NextResponse.json({
       success: false,
       message: 'Failed to buy number',
-      error: error.message,
-    }, { status: error.status || 500 });
+      error: errorMessage,
+    }, { status: errorStatus });
   }
 }

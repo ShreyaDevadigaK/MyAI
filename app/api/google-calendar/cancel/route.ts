@@ -106,11 +106,14 @@ export async function POST(request: NextRequest) {
       smsSent: false // Explicitly indicate no SMS was sent
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Cancel error:', error);
     
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorCode = (error as { code?: number }).code;
+
     // Handle specific error cases
-    if (error.code === 404) {
+    if (errorCode === 404) {
       return NextResponse.json({ 
         error: 'Event not found',
         details: 'The specified event ID does not exist'
@@ -119,7 +122,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json({ 
       error: 'Failed to cancel event',
-      details: error.message 
+      details: errorMessage 
     }, { status: 500 });
   }
 }

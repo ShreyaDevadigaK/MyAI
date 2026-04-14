@@ -41,9 +41,10 @@ export async function GET() {
     }));
 
     return NextResponse.json({ transfers });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching call transfers:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
@@ -72,9 +73,10 @@ export async function POST(request: NextRequest) {
       message: 'Call transfer added successfully',
       transfer: { id, phoneNumber, createdAt: timestamp, updatedAt: timestamp, isActive: true }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error adding call transfer:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
@@ -110,9 +112,10 @@ export async function DELETE(request: NextRequest) {
     });
 
     return NextResponse.json({ message: 'Call transfer deleted successfully' });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error deleting call transfer:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
@@ -164,8 +167,9 @@ export async function PATCH(request: NextRequest) {
       message: 'Call transfer updated successfully',
       transfer: { id, isActive }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error updating call transfer:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

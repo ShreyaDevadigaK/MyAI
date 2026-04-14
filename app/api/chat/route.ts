@@ -4,13 +4,14 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 
 // Retry helper
-async function retrySendMessage(chat: any, text: string, retries = 3, delay = 2000) {
+async function retrySendMessage(chat: { sendMessage: (text: string) => Promise<any> }, text: string, retries = 3, delay = 2000) {
   for (let i = 0; i < retries; i++) {
     try {
       const result = await chat.sendMessage(text);
       return result;
-    } catch (error: any) {
-      if (error.message.includes('503') && i < retries - 1) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : '';
+      if (errorMessage.includes('503') && i < retries - 1) {
         console.warn(`Gemini API overloaded. Retrying in ${delay}ms...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
       } else {
@@ -66,10 +67,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ response: responseText });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error in Gemini chat API:', error);
 
-    const errorMessage = error.message || '';
+    const errorMessage = error instanceof Error ? error.message : '';
 
     if (errorMessage.includes('503')) {
       return NextResponse.json({
