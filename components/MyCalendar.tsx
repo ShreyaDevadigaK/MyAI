@@ -72,15 +72,15 @@ export default function MyCalendar() {
     if (!eventsData?.events) return []
     
     console.log('Received events from API:', eventsData.events.length);
-    eventsData.events.forEach((event: any) => {
+    eventsData.events.forEach((event: { summary?: string; start?: { dateTime?: string; date?: string } }) => {
       console.log('Event:', event.summary, 'Start:', event.start?.dateTime || event.start?.date);
     });
     
-    return eventsData.events.map((event: any) => ({
+    return eventsData.events.map((event: { id?: string; summary?: string; start?: { dateTime?: string; date?: string }; end?: { dateTime?: string; date?: string }; location?: string; description?: string; status?: string; htmlLink?: string }) => ({
       id: event.id,
       title: event.summary || 'Untitled event',
-      start: new Date(event.start?.dateTime || event.start?.date),
-      end: new Date(event.end?.dateTime || event.end?.date),
+      start: new Date(event.start?.dateTime || event.start?.date || ''),
+      end: new Date(event.end?.dateTime || event.end?.date || ''),
       allDay: !event.start?.dateTime, // If no time specified, it's an all-day event
       resource: {
         location: event.location,
@@ -160,7 +160,7 @@ export default function MyCalendar() {
               onNavigate={(newDate: Date) => setDate(newDate)}
               popup
               toolbar={true}
-              eventPropGetter={(event: any) => ({
+              eventPropGetter={() => ({
                 style: {
                   backgroundColor: '#6b46c1',
                   borderRadius: '4px',
@@ -170,7 +170,7 @@ export default function MyCalendar() {
                   display: 'block',
                 },
               })}
-              onSelectEvent={(event: any) => {
+              onSelectEvent={(event: { resource: { htmlLink?: string } }) => {
                 // Open event details or Google Calendar link
                 if (event.resource.htmlLink) {
                   window.open(event.resource.htmlLink, '_blank')

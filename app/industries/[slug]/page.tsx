@@ -40,7 +40,7 @@ interface IndustryInfo {
   step2: string
   step3: string
   step4: string
-  features: { icon: any; title: string; description: string }[]
+  features: { icon: React.ComponentType<{ className?: string }>; title: string; description: string }[]
 
 }
 

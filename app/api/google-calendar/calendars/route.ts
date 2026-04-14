@@ -46,17 +46,19 @@ export async function GET(request: NextRequest) {
       }))
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching calendars:', error)
     
-    if (error.message === 'Google not connected') {
+    const errorMessage = error instanceof Error ? error.message : '';
+
+    if (errorMessage === 'Google not connected') {
       return NextResponse.json({ 
         error: 'Google account not connected. Please connect your Google account to view calendars.',
         requiresAuth: true 
       }, { status: 401 })
     }
 
-    if (error.message === 'Missing Google OAuth env vars') {
+    if (errorMessage === 'Missing Google OAuth env vars') {
       return NextResponse.json({ 
         error: 'Google OAuth configuration is missing. Please check server configuration.',
         requiresConfig: true 
@@ -64,7 +66,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({ 
-      error: error.message || 'Failed to fetch calendars' 
+      error: errorMessage || 'Failed to fetch calendars' 
     }, { status: 500 })
   }
 }

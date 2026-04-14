@@ -3,26 +3,25 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useState } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation"
 import { UserButton } from "@clerk/nextjs"
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 
 export function Navbar() {
-  const pathname = usePathname()
   const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
+  // const [isHovered, setIsHovered] = useState(false)
   const router = useRouter()
 
-  const industries = [
-    "Real Estate", "Law Firms", "Contractors", "Churches", "Locksmiths",
-    "Plumbing", "MSP & IT Services", "HVAC Companies", "Restaurants",
-    "Accounting Firms", "E-commerce", "Automotive Services", "Veterinary Clinics",
-    "Electricians", "Towing Companies", "Dental Offices", "Insurance Agents",
-    "Roofing Companies", "Property Managers", "Cleaning Companies",
-  ]
+  // const industries = [
+  //   "Real Estate", "Law Firms", "Contractors", "Churches", "Locksmiths",
+  //   "Plumbing", "MSP & IT Services", "HVAC Companies", "Restaurants",
+  //   "Accounting Firms", "E-commerce", "Automotive Services", "Veterinary Clinics",
+  //   "Electricians", "Towing Companies", "Dental Offices", "Insurance Agents",
+  //   "Roofing Companies", "Property Managers", "Cleaning Companies",
+  // ]
 
   return (
     <header className="fixed z-50 w-full bg-gradient-to-r from-[#7c3aed] via-[#8b5cf6] to-[#a78bfa]">

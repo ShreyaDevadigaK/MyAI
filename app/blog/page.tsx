@@ -5,61 +5,14 @@ import { Navbar } from '@/components/Navbar'
 import { ComprehensiveFooter } from '@/components/ComprehensiveFooter'
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { Ghost } from 'lucide-react';
+import { blogPosts } from '@/lib/blog-posts';
+
 
 function BlogPage() {
   const router = useRouter()
 
 
-  interface BlogPost {
-    title: string;
-    date: string;
-    team: string;
-    description: string;
-    image: string;
-    tags: string[];
-  }
 
-  const blogPosts: Record<string, BlogPost> = {
-    'how-ai-automates-real-estate-client-follow-ups': {
-      title: 'How AI Automates Real Estate Client Follow-Ups',
-      date: 'July 28, 2025',
-      team: 'Dialzara Team',
-      description:
-        'Explore how AI revolutionizes real estate follow-ups by automating responses, nurturing leads, and streamlining workflows.',
-      image: '/images/real-estate-ai.png',
-      tags: ['AI', 'Real Estate', 'Automation'],
-    },
-    'evaluating-ai-vendors-partner-ecosystem-strength': {
-      title: 'Evaluating AI Vendors: Partner Ecosystem Strength',
-      date: 'July 28, 2025',
-      team: 'Dialzara Team',
-      description:
-        'Understand how to evaluate AI vendors based on their ecosystem partnerships and integration capabilities.',
-      image: '/images/ai-vendor-evaluation.png',
-      tags: ['Vendors', 'AI', 'Integration'],
-    },
-    'top-use-cases-for-ai-text-summarization-in-business': {
-      title: 'Top Use Cases for AI Text Summarization in Business',
-      date: 'July 28, 2025',
-      team: 'Dialzara Team',
-      description:
-        'AI summarization is helping legal, HR, and support teams save time and improve clarity. Explore its top applications.',
-      image: '/images/ai-text-summarization.png',
-      tags: ['Summarization', 'AI', 'Productivity'],
-    },
-    "ai-in-customer-support-automation": {
-    title: "AI in Customer Support Automation",
-    date: "August 2, 2025",
-    team: "Dialzara Team",
-    
-    image: "/images/support.jpg",
-    tags: ["AI", "Customer Support", "NLP"],
-    description: 
-      "Customer support has embraced AI through intelligent bots and smart ticket routing.Natural Language Processing enables AI to understand intent and resolve common queries instantly."
-    ,
-  }
-  };
   return (
     <div className="min-h-screen bg-white">
 

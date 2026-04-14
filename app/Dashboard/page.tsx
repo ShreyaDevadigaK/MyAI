@@ -1,21 +1,18 @@
 "use client";
 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SubscriptionContent from "@/components/SubscriptionContent";
 import ProfileContent from "@/components/ProfileContent";
 import ActivityContent from "@/components/ActivityContent";
 import CalendarContent from "@/components/CalendarContent";
 import MyAgentContent from "@/components/MyAgentContent";
-import MyCalendar from "@/components/MyCalendar";
 import CallTransfersEditor from "@/components/CallTransfersEditor";
 import AgentConfiguration from "../agent-configuration/page";
-import MoreSettings from "@/components/MoreSettingsPanel";
 import { useRouter } from "next/navigation";
 import { useSelectedVoice } from '@/context/SelectedVoiceContext'
 import { useCallActivity } from '@/context/CallActivityContext'
 import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
 
 // const voices = [
 //   { id: "f0ed7e07-0e85-4853-a8f5-e09c627cf944", name: "Cassidy-English", gender: "Female", description: "English. Female.", previewUrl: "https://storage.googleapis.com/eleven-public-prod/database/workspace/1da06ea679a54975ad96a2221fe6530d/voices/56AoDkrOh6qfVPDXZ7Pt/oEgVi6mikkKcpVcTFfj5.mp3", phoneNumber: "+14027966599" },
@@ -25,13 +22,6 @@ import { useEffect } from 'react'
 //   { id: "af750274-1a66-4b7c-ae41-e1a196fbe285", name: "Peter - Slovak", gender: "Male", description: "Middle aged male.", previewUrl: "https://storage.googleapis.com/eleven-public-prod/database/user/HOZrfHdrnpe9pZlWrIwZoq4cDsX2/voices/d6IbhdqAKkXCCVuJjbie/KdiAikWHzYiPnLKFP9Qv.mp3", phoneNumber: "+14027966599" },
 //   { id: "3a645332-ab59-485a-83ed-2fc0c79815f1", name: "David-English-British", gender: "Male", description: "Default Male", previewUrl: "https://storage.googleapis.com/eleven-public-prod/custom/voices/BNgbHR0DNeZixGQVzloa/40VSLvxrLAkmQgyrEA4t.mp3", phoneNumber: "+14027966599" },
 // ];
-
-interface Voice {
-  voiceId: string;
-  name: string;
-  description: string;
-  previewUrl: string;
-}
 
 const sidebarItems = [
   { id: "my-agent", label: "My Agent" },
@@ -49,8 +39,7 @@ const sidebarItems = [
 
 const DashboardPage: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = useState<string>("my-agent");
-  const { selectedVoiceId, setSelectedVoiceId } = useSelectedVoice();
-  const { callActivities } = useCallActivity();
+  const { setSelectedVoiceId } = useSelectedVoice();
 
   const searchParams = useSearchParams();
   const industryRaw = searchParams.get('industry') || '';

@@ -181,7 +181,7 @@ export default function Home() {
                   System Prompt
                 </CardTitle>
                 <CardDescription className="text-xs sm:text-sm">
-                  Define the AI's personality and instructions
+                  Define the AI&apos;s personality and instructions
                 </CardDescription>
               </CardHeader>
 

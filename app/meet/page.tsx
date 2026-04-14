@@ -6,7 +6,7 @@ import { CalendarDays, X, MessageCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { PlayCircle, CheckCircle } from "lucide-react"
 import { ComprehensiveFooter } from '@/components/ComprehensiveFooter'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation';
 
 // function page() {

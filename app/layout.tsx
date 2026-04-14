@@ -1,31 +1,13 @@
 import type { Metadata } from "next";
 import {
   ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
 } from '@clerk/nextjs'
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import { cn } from '@/lib/utils';
-import { Playfair_Display, Source_Sans_3 as Source_Sans_Pro } from "next/font/google"
-import "./globals.css"
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-playfair",
-})
 
-const sourceSans = Source_Sans_Pro({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  display: "swap",
-  variable: "--font-source-sans",
-})
+
 
 
 

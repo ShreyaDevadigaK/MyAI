@@ -7,7 +7,7 @@ const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN || '';
 const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER || '';
 const ULTRAVOX_API_KEY = process.env.ULTRAVOX_API_KEY || '';
 
-function createUltravoxCall(ultravoxCallConfig: any) {
+function createUltravoxCall(ultravoxCallConfig: Record<string, unknown>) {
   const ULTRAVOX_API_URL = 'https://api.ultravox.ai/api/calls';
 
   const request = https.request(ULTRAVOX_API_URL, {
@@ -205,7 +205,7 @@ Available transfer numbers: ${transferNumbersList}
       ],
     };
 
-    const ultravoxResponse: any = await createUltravoxCall(ULTRAVOX_CALL_CONFIG);
+    const ultravoxResponse = await createUltravoxCall(ULTRAVOX_CALL_CONFIG) as { joinUrl?: string; callId?: string };
 
     if (!ultravoxResponse.joinUrl) {
       return NextResponse.json({ error: 'No joinUrl received from Ultravox API' }, { status: 500 });
@@ -226,8 +226,9 @@ Available transfer numbers: ${transferNumbersList}
       to: phoneNumber,
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error in POST /api/inboundcall:', error);
-    return NextResponse.json({ error: error.message || 'Unknown error' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

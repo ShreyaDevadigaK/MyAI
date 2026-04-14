@@ -1,14 +1,10 @@
 'use client';
 
-import { useUser, useClerk, UserButton, PricingTable } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
+import { PricingTable } from "@clerk/nextjs";
 import { ComprehensiveFooter } from "@/components/ComprehensiveFooter";
-import { FAQSection } from "@/components/FaqSection";
 import { Navbar } from "@/components/Navbar";
 
 export default function PricingPage() {
-  const { user } = useUser();
-  const { openSignIn } = useClerk();
 
   return (
     <div className="min-h-screen flex flex-col bg-white">

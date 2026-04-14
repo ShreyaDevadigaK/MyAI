@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { getCalendarFromClerk, getSheetsFromClerk } from '@/lib/google-from-clerk';
-import { updateEvent } from '@/lib/calendar-service';import { supabase } from '@/lib/supabase-client'
+import { updateEvent } from '@/lib/calendar-service';
+import { supabase } from '@/lib/supabase-client';
+import twilio from 'twilio';
 export async function POST(request: NextRequest) {
   try {
     // Verify user is authenticated
@@ -95,12 +97,12 @@ export async function POST(request: NextRequest) {
     // Send SMS notification if Twilio is configured
     if (customerPhone && process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_PHONE_NUMBER) {
       try {
-        const twilio = require('twilio')(
+        const twilioClient = twilio(
           process.env.TWILIO_ACCOUNT_SID,
           process.env.TWILIO_AUTH_TOKEN
         );
 
-        const message = await twilio.messages.create({
+        const message = await twilioClient.messages.create({
           body: `Hi ${customerName || 'there'}! Your ${serviceType || 'appointment'} has been rescheduled to ${newDate.toLocaleString()}. If you have any questions, please call us.`,
           from: process.env.TWILIO_PHONE_NUMBER,
           to: customerPhone

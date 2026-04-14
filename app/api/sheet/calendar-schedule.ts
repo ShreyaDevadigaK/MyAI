@@ -186,7 +186,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { eventId, event_details, conversation_history } = body
+    const { eventId, conversation_history } = body
 
     if (!eventId) {
       return NextResponse.json({ error: 'Missing eventId' }, { status: 400 })

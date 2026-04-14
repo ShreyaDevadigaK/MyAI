@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { google } from 'googleapis'
 import { getCalendarFromClerk, getSheetsFromClerk } from '@/lib/google-from-clerk'
 import { auth } from '@clerk/nextjs/server'
 import twilio from 'twilio'
@@ -116,7 +115,6 @@ async function appendBookingRow({
   range,
   phone,
   customerName,
-  smsStatus,
   dateScheduled,
   serviceType,
   origin,
@@ -270,7 +268,7 @@ export async function POST(request: NextRequest) {
     const detailsText: string = body?.event_details || ''
     const history: ConversationEntry[] = body?.conversation_history || []
 
-    let phone = extractPhoneFromHistory(history)
+    const phone = extractPhoneFromHistory(history)
     const service_type = extractServiceType(detailsText)
     const customer_name = extractCustomerName(detailsText)
 

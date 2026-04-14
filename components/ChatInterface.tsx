@@ -56,9 +56,10 @@ export function ChatInterface() {
       }
 
       setMessages((prev) => [...prev, assistantMessage])
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error sending message", err)
-      setErrorMessage(err.message || "Error sending message")
+      const errorMessage = err instanceof Error ? err.message : "Error sending message";
+      setErrorMessage(errorMessage)
     } finally {
       setIsLoading(false)
     }

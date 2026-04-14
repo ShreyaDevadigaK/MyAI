@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       oauth2Client.setCredentials(tokens)
       
       // Create or get user's spreadsheet
-      let spreadsheetId = await createOrGetUserSpreadsheet(oauth2Client, userId)
+      const spreadsheetId = await createOrGetUserSpreadsheet(oauth2Client, userId)
       
       await client.users.updateUser(userId, {
         privateMetadata: {

@@ -53,7 +53,6 @@ export function Navigation() {
       {isOpen && (
         <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-200 md:hidden">
           <nav className="px-6 py-4 space-y-4">
-          <nav className="px-6 py-4 space-y-4">
             <Link href="/" className="block text-gray-700 hover:text-gray-900">
               Home
             </Link>

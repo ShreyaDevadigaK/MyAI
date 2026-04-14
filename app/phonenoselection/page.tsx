@@ -69,7 +69,7 @@ export default function PhoneSelectionPage() {
       if (response.ok) {
         if (data.numbers && data.numbers.length > 0) {
 
-          const mappedNumbers: PhoneNumber[] = data.numbers.map((num: any) => ({
+          const mappedNumbers: PhoneNumber[] = data.numbers.map((num: { phoneNumber: string; isoCountry?: string; capabilities?: { voice?: boolean; sms?: boolean; mms?: boolean }; price?: string }) => ({
             phoneNumber: num.phoneNumber,
             isoCountry: num.isoCountry,
 
@@ -88,9 +88,10 @@ export default function PhoneSelectionPage() {
       } else {
         setSearchError(data.message || 'Failed to search for numbers');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Search error:', err);
-      setSearchError('An unexpected error occurred during search: ' + err.message);
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setSearchError('An unexpected error occurred during search: ' + errorMessage);
     } finally {
       setLoadingSearch(false);
     }
@@ -139,9 +140,10 @@ export default function PhoneSelectionPage() {
       } else {
         setPurchaseMessage(`Failed to purchase number: ${data.message || 'Unknown error'}`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error purchasing number:', error);
-      setPurchaseMessage('An error occurred while purchasing the number: ' + error.message);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setPurchaseMessage('An error occurred while purchasing the number: ' + errorMessage);
     } finally {
       setLoadingPurchase(false);
     }

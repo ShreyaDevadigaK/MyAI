@@ -32,9 +32,10 @@ export default function ActivityContent() {
       setData(activities);
       setError('');
       lastFetchedUserIdRef.current = userId;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching activities:', error);
-      setError(error?.message || 'Failed to load call activities from database');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load call activities from database';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

@@ -311,7 +311,7 @@ export default function HomePage() {
                     <div className="ml-auto text-green-500">★</div>
                   </div>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    Outstanding AI receptionist service. It's like having a full-time receptionist at a fraction of the
+                    Outstanding AI receptionist service. It&apos;s like having a full-time receptionist at a fraction of the
                     cost. Highly recommend to any business owner.
                   </p>
                 </div>

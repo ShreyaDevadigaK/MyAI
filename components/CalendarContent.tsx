@@ -40,12 +40,10 @@ export default function CalendarContent() {
       const events = await fetchUserEvents(userId)
       setEvents(events)
       setError('')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching events:', error)
-      setError(
-        error?.message ||
-          (typeof error === 'string' ? error : 'Failed to load calendar events')
-      )
+      const errorMessage = error instanceof Error ? error.message : (typeof error === 'string' ? error : 'Failed to load calendar events');
+      setError(errorMessage)
     } finally {
       if (showLoading) {
         setLoading(false)

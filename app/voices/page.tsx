@@ -93,7 +93,7 @@ const MyAiPageVoices = () => {
               </span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto animate-fade-in-up animation-delay-100">
-              Select from a variety of natural-sounding AI voices to perfectly match your brand's personality and tone.
+              Select from a variety of natural-sounding AI voices to perfectly match your brand&apos;s personality and tone.
             </p>
 
             <div className="mt-4 flex items-center justify-center gap-2 text-purple-600 dark:text-purple-400 font-medium text-sm animate-fade-in-up animation-delay-200">
@@ -126,7 +126,7 @@ const MyAiPageVoices = () => {
               Ready to Experience the Difference?
             </h2>
             <p className="text-lg sm:text-xl mb-8 text-gray-300 animate-fade-in-up animation-delay-100">
-              See how MYAI's features work together to transform your phone system in a personalized demo.
+              See how MYAI&apos;s features work together to transform your phone system in a personalized demo.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up animation-delay-200">

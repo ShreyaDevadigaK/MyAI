@@ -120,7 +120,7 @@ export async function GET(request: Request) {
     let availableNumbers;
 
 
-    const listOptions: any = {
+    const listOptions: Record<string, unknown> = {
       // smsEnabled: smsEnabled,
       // mmsEnabled: mmsEnabled,
       // voiceEnabled: voiceEnabled,
@@ -164,7 +164,7 @@ export async function GET(request: Request) {
       };
       const numberTypeForPricing = typeMap[type] || type.toLowerCase();
 
-      const pricing: any = await client.pricing.v1.phoneNumbers.countries("US").fetch();
+      const pricing = await client.pricing.v1.phoneNumbers.countries("US").fetch() as { phoneNumberPrices?: { number_type: string; base_price?: string; priceUnit?: string }[] };
 
       console.log('Country:', country);
       console.log('Pricing API response:', pricing);
@@ -176,9 +176,7 @@ export async function GET(request: Request) {
 
         //const numberTypeLower = type.toLowerCase();
 
-        let priceEntry;
-        // Case 1: Search for an exact match first
-        priceEntry = pricing.phoneNumberPrices.find((p: any) => p.number_type.toLowerCase() === numberTypeForPricing);
+        const priceEntry = pricing.phoneNumberPrices.find((p: { number_type: string }) => p.number_type.toLowerCase() === numberTypeForPricing);
 
 
         // Case 2: If still no match, use the first available price as a last resort, but add a note
@@ -201,15 +199,16 @@ export async function GET(request: Request) {
       } else {
         monthlyPrice = 'Pricing data not available for this country.';
       }
-    } catch (pricingError: any) {
-      console.warn(`Could not fetch pricing for ${country} - ${type}:`, pricingError.message);
+    } catch (pricingError: unknown) {
+      const pricingErrorMessage = pricingError instanceof Error ? pricingError.message : 'unknown error';
+      console.warn(`Could not fetch pricing for ${country} - ${type}:`, pricingErrorMessage);
       monthlyPrice = 'Error fetching pricing';
     }
 
 
 
 
-    const numbersWithPrice = availableNumbers.map((num: any) => ({
+    const numbersWithPrice = availableNumbers.map((num: { phoneNumber: string; isoCountry?: string; capabilities?: { voice?: boolean; sms?: boolean; mms?: boolean } }) => ({
       phoneNumber: num.phoneNumber,
       isoCountry: num.isoCountry,
       capabilities: {
@@ -225,9 +224,10 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ success: true, numbers: numbersWithPrice });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error searching for Twilio numbers:', error);
-    return NextResponse.json({ success: false, message: 'Failed to search for numbers', error: error.message }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ success: false, message: 'Failed to search for numbers', error: errorMessage }, { status: 500 });
   }
 }
 

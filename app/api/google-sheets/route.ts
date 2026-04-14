@@ -40,31 +40,33 @@ export async function GET(request: NextRequest) {
 
     const res = await sheets.spreadsheets.values.get({ spreadsheetId, range })
     return NextResponse.json({ values: res.data.values || [] })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Google Sheets API Error:', error)
     
+    const errorMessage = error instanceof Error ? error.message : '';
+
     // Handle specific Google API errors
-    if (error.message?.includes('Unable to parse range')) {
+    if (errorMessage?.includes('Unable to parse range')) {
       return NextResponse.json({ 
         error: `Invalid range format. Please check the range syntax.`,
         suggestion: 'Format should be: SheetName!A1:Z100'
       }, { status: 400 })
     }
     
-    if (error.message?.includes('PERMISSION_DENIED')) {
+    if (errorMessage?.includes('PERMISSION_DENIED')) {
       return NextResponse.json({ 
         error: 'Permission denied. Please ensure your Google account has access to this spreadsheet.' 
       }, { status: 403 })
     }
     
-    if (error.message?.includes('NOT_FOUND')) {
+    if (errorMessage?.includes('NOT_FOUND')) {
       return NextResponse.json({ 
         error: 'Spreadsheet or sheet not found. Please check your Google Sheets configuration.' 
       }, { status: 404 })
     }
 
     return NextResponse.json({ 
-      error: error.message || 'Failed to fetch data from Google Sheets. Please try again.' 
+      error: errorMessage || 'Failed to fetch data from Google Sheets. Please try again.' 
     }, { status: 500 })
   }
 }

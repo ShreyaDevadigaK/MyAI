@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 
 // Retry helper
-async function retrySendMessage(chat: { sendMessage: (text: string) => Promise<any> }, text: string, retries = 3, delay = 2000) {
+async function retrySendMessage(chat: { sendMessage: (text: string) => Promise<unknown> }, text: string, retries = 3, delay = 2000) {
   for (let i = 0; i < retries; i++) {
     try {
       const result = await chat.sendMessage(text);
