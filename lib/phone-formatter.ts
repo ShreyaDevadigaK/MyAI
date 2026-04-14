@@ -33,8 +33,6 @@ export function formatPhoneNumber(phoneNumber: string, countryCode: string = '+9
 }
 
 export function validatePhoneNumber(phoneNumber: string): boolean {
-  const cleaned = phoneNumber.replace(/\D/g, '');
-  
   // Valid formats:
   // +91XXXXXXXXXX (12 digits with +91)
   // 0XXXXXXXXXX (11 digits starting with 0)

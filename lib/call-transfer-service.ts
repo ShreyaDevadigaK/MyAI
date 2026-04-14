@@ -7,10 +7,10 @@ if (!SPREADSHEET_ID || !GOOGLE_SERVICE_ACCOUNT_CREDENTIALS) {
   console.error('Google Sheets configuration missing for call transfers');
 }
 
-let credentials;
+let credentials: Record<string, unknown> | undefined;
 try {
   credentials = JSON.parse(GOOGLE_SERVICE_ACCOUNT_CREDENTIALS);
-} catch (e) {
+} catch {
   console.error('Invalid JSON in GOOGLE_SERVICE_ACCOUNT_CREDENTIALS');
 }
 
@@ -67,7 +67,7 @@ export async function getActivePhoneNumberFromCallTransfers(): Promise<string | 
     }
     
     return `+91${cleaned}`;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching active phone number from call transfers:', error);
     return null;
   }

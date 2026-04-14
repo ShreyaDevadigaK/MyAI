@@ -28,7 +28,7 @@ const saveMappings = (mappings: Map<string, string>) => {
 };
 
 // Initialize mappings
-let callMappings = loadMappings();
+const callMappings = loadMappings();
 
 export const storeCallMapping = (ultravoxId: string, twilioSid: string) => {
   callMappings.set(ultravoxId, twilioSid);

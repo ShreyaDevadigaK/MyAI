@@ -1,6 +1,27 @@
 import { google } from 'googleapis'
 import { auth, clerkClient } from '@clerk/nextjs/server'
 
+type SpreadsheetClient = {
+  spreadsheets: {
+    get: (args: { spreadsheetId: string }) => Promise<{
+      data: {
+        sheets?: Array<{ properties?: { title?: string } }>
+      }
+    }>
+    create: (args: {
+      resource: {
+        properties: {
+          title: string
+        }
+      }
+    }) => Promise<{
+      data: {
+        spreadsheetId?: string | null
+      }
+    }>
+  }
+}
+
 
 export async function getGoogleAuthFromClerk(origin: string) {
   const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID || ''
@@ -37,7 +58,7 @@ export async function getUserSpreadsheetId(): Promise<string | undefined> {
   return (user.privateMetadata as { userSpreadsheetId?: string })?.userSpreadsheetId;
 }
 
-export async function validateSpreadsheetExists(sheets: { spreadsheets: any }, spreadsheetId: string): Promise<boolean> {
+export async function validateSpreadsheetExists(sheets: SpreadsheetClient, spreadsheetId: string): Promise<boolean> {
   try {
     await sheets.spreadsheets.get({ spreadsheetId })
     return true
@@ -47,17 +68,17 @@ export async function validateSpreadsheetExists(sheets: { spreadsheets: any }, s
   }
 }
 
-export async function createSpreadsheet(sheets: { spreadsheets: any }, title: string): Promise<string> {
+export async function createSpreadsheet(sheets: SpreadsheetClient, title: string): Promise<string> {
   const resource = {
     properties: {
       title: title,
     },
   };
   const response = await sheets.spreadsheets.create({ resource });
-  return response.data.spreadsheetId;
+  return response.data.spreadsheetId || '';
 }
 
-export async function validateSheetExists(sheets: { spreadsheets: any }, spreadsheetId: string, sheetName: string): Promise<boolean> {
+export async function validateSheetExists(sheets: SpreadsheetClient, spreadsheetId: string, sheetName: string): Promise<boolean> {
   try {
     const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId })
     const sheetsList = spreadsheet.data.sheets || []
@@ -71,7 +92,7 @@ export async function validateSheetExists(sheets: { spreadsheets: any }, spreads
   }
 }
 
-export async function listAvailableSheets(sheets: { spreadsheets: any }, spreadsheetId: string): Promise<string[]> {
+export async function listAvailableSheets(sheets: SpreadsheetClient, spreadsheetId: string): Promise<string[]> {
   try {
     const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId })
     const sheetsList = spreadsheet.data.sheets || []

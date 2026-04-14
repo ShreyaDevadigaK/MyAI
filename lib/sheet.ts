@@ -15,7 +15,7 @@ export async function fetchSheetData() {
     let credentials;
     try {
       credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS);
-    } catch (parseError) {
+    } catch {
       throw new Error('Invalid JSON format in GOOGLE_SERVICE_ACCOUNT_CREDENTIALS');
     }
 
