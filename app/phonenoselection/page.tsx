@@ -37,7 +37,6 @@ export default function PhoneSelectionPage() {
 
   // --- Popup State ---
   const [showPopup, setShowPopup] = useState(false);
-  const [popupMessage, setPopupMessage] = useState('');
   const [popupPhoneNumber, setPopupPhoneNumber] = useState('');
 
   // Other props (like industry from searchParams)
@@ -123,7 +122,6 @@ export default function PhoneSelectionPage() {
       const data = await response.json();
 
         if (response.ok) {
-          setPopupMessage(`Successfully purchased!`);
           setPopupPhoneNumber(data.purchasedNumber?.phoneNumber || selectedNumber.phoneNumber); 
           setShowPopup(true);
           setTimeout(() => {

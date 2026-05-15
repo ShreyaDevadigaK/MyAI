@@ -2,11 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import { Clock, Target, Users, Star, Building } from "lucide-react"
-import { Mic, Phone, Bot, Calendar, MessageCircle, BarChart2 } from "lucide-react";
+import { Mic, Phone, Calendar, MessageCircle, BarChart2 } from "lucide-react";
 import { Navbar } from "@/components/Navbar"
 import { ComprehensiveFooter } from "@/components/ComprehensiveFooter"
-import { BadgeCheck, Languages, FolderKanban, ShieldCheck, PhoneForwarded, Zap, ClipboardList } from "lucide-react";
-import { CalendarDays } from "lucide-react";
+import { Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 // export default function FeaturesPage() {

@@ -4,7 +4,6 @@ import { useState, useRef, useEffect, type FormEvent } from 'react';
 import { useAgentPrompt } from '@/context/AgentPromptContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Bot, User, Send, Trash2, Sparkles, LoaderCircle, Settings2 } from 'lucide-react';

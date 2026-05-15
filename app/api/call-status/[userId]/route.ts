@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase-client'
 import https from 'https'
 import { getUltravoxIdByTwilioSid } from '@/lib/call-mappings-persistent'
+import { getSheetsFromClerk, getUserSpreadsheetId } from '@/lib/google-from-clerk'
 
 const ULTRAVOX_API_KEY = process.env.ULTRAVOX_API_KEY || ''
 const ULTRAVOX_API_URL = 'https://api.ultravox.ai/api/calls'
@@ -104,51 +105,67 @@ function formatDateAndTime(value?: string) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ userId: string }> }
+) {
   try {
+    const { userId } = await params
     const url = new URL(request.url)
-    const userId = url.searchParams.get('userId')
 
     if (!userId) {
+      console.error('Missing userId in call-status webhook')
       return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
     }
 
-    const formData = await request.formData()
-    const callSid = formData.get('CallSid')?.toString() || ''
-    const callStatus = formData.get('CallStatus')?.toString() || ''
-    const from = formData.get('From')?.toString() || ''
-    const to = formData.get('To')?.toString() || ''
-    const duration =
-      formData.get('CallDuration')?.toString() ||
-      formData.get('Duration')?.toString() ||
-      '0'
+    const contentType = request.headers.get('content-type') || ''
+    let callSid = ''
+    let callStatus = ''
+    let from = ''
+    let to = ''
+    let duration = '0'
+    let ultravoxCallId = url.searchParams.get('ultravoxCallId') || ''
+    let summary = ''
+    let endReason = ''
 
-    if (!callSid) {
-      return NextResponse.json({ error: 'Missing CallSid' }, { status: 400 })
+    // 1. Parse Request Payload
+    if (contentType.includes('application/json')) {
+      try {
+        const body = await request.json()
+        // Check both top-level and nested call object
+        ultravoxCallId = body.callId || body.call?.callId || ultravoxCallId
+        endReason = body.endReason || body.call?.endReason || ''
+        summary = body.shortSummary || body.summary || body.call?.shortSummary || body.call?.summary || ''
+        console.log(`Ultravox callback/payload received for ID: ${ultravoxCallId}`)
+      } catch (e) {
+        console.warn('Non-JSON or malformed body received in JSON-labeled request')
+      }
+    } else {
+      try {
+        const formData = await request.formData()
+        callSid = formData.get('CallSid')?.toString() || ''
+        callStatus = formData.get('CallStatus')?.toString() || ''
+        from = formData.get('From')?.toString() || ''
+        to = formData.get('To')?.toString() || ''
+        duration = formData.get('CallDuration')?.toString() || formData.get('Duration')?.toString() || '0'
+        
+        if (callSid && !ultravoxCallId) {
+          ultravoxCallId = getUltravoxIdByTwilioSid(callSid) || ''
+        }
+        console.log(`Twilio callback received for SID ${callSid}, resolved Ultravox ID: ${ultravoxCallId}`)
+      } catch (e) {
+        console.warn('Error parsing form data from Twilio callback')
+      }
     }
 
+    // 2. Resolve User
     const resolvedUserId = await resolveSupabaseUserId(userId)
     if (!resolvedUserId) {
       return NextResponse.json({ error: 'Unable to resolve Supabase user id' }, { status: 400 })
     }
 
-    const ultravoxCallId = getUltravoxIdByTwilioSid(callSid)
-    const candidateCallIds = [callSid, ultravoxCallId].filter(
-      (value): value is string => Boolean(value)
-    )
-    const existing = await supabase
-      .from('activities')
-      .select('*')
-      .in('call_id', candidateCallIds)
-      .limit(1)
-      .maybeSingle()
-
-    if (existing.error) {
-      console.error('Error checking existing call activity:', existing.error)
-    }
-
+    // 3. Fetch Full Details if possible
     let ultravoxDetails: UltravoxCallResponse | null = null
-
     if (ultravoxCallId && ULTRAVOX_API_KEY) {
       try {
         ultravoxDetails = await getUltravoxCallDetails(ultravoxCallId)
@@ -157,6 +174,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // 4. Consolidate Details
     const resolvedCallId = ultravoxDetails?.callId || ultravoxCallId || callSid
     const resolvedFrom = ultravoxDetails?.medium?.twilio?.outgoing?.from || from
     const resolvedTo = ultravoxDetails?.medium?.twilio?.outgoing?.to || to
@@ -164,9 +182,16 @@ export async function POST(request: NextRequest) {
     const { date, time } = formatDateAndTime(endedAt)
     const resolvedDuration = ultravoxDetails?.billedDuration || duration
     const resolvedSummary =
+      summary ||
       ultravoxDetails?.shortSummary ||
       ultravoxDetails?.summary ||
-      `Outbound call ${callStatus}${ultravoxDetails?.endReason ? ` (${ultravoxDetails.endReason})` : ''}`
+      (callStatus ? `Outbound call ${callStatus}${endReason || ultravoxDetails?.endReason ? ` (${endReason || ultravoxDetails?.endReason})` : ''}` : '')
+
+    // If we have no call ID and no summary, don't save an empty record
+    if (!resolvedCallId && !resolvedSummary) {
+      return NextResponse.json({ success: false, message: 'No call data found to store' })
+    }
+
     const activity = {
       user_id: resolvedUserId,
       call_id: resolvedCallId,
@@ -179,29 +204,64 @@ export async function POST(request: NextRequest) {
       summary: resolvedSummary
     }
 
+    // 5. Update/Save to Supabase
+    const candidateCallIds = [resolvedCallId, callSid, ultravoxCallId].filter(
+      (value): value is string => Boolean(value)
+    )
+    const existing = await supabase
+      .from('activities')
+      .select('*')
+      .in('call_id', candidateCallIds)
+      .limit(1)
+      .maybeSingle()
+
+    let dbResult
     if (existing.data?.id) {
-      const { data, error } = await supabase
+      dbResult = await supabase
         .from('activities')
         .update(activity)
         .eq('id', existing.data.id)
         .select()
+    } else {
+      dbResult = await supabase.from('activities').insert([activity]).select()
+    }
 
-      if (error) {
-        console.error('Error updating call status activity:', error)
-        return NextResponse.json({ error: error.message || 'Failed to update activity' }, { status: 500 })
+    if (dbResult.error) {
+      console.error('Error saving activity to DB:', dbResult.error)
+    }
+
+    // 6. Update Google Sheets
+    try {
+      const spreadsheetId = await getUserSpreadsheetId(userId)
+      if (spreadsheetId && resolvedSummary) {
+        const sheets = await getSheetsFromClerk(url.origin, userId)
+        const timestamp = new Date().toISOString()
+        const rowData = [
+          timestamp,
+          'CALL_LOG',
+          resolvedTo || 'N/A',
+          'Customer',
+          'N/A',
+          `${date} ${time}`,
+          '',
+          resolvedSummary || 'N/A',
+          `Duration: ${resolvedDuration}, Status: ${callStatus || endReason || 'Completed'}`
+        ]
+
+        await sheets.spreadsheets.values.append({
+          spreadsheetId,
+          range: 'Call Activities!A:I',
+          valueInputOption: 'USER_ENTERED',
+          requestBody: {
+            values: [rowData],
+          },
+        })
       }
-
-      return NextResponse.json({ data, updated: true })
+    } catch (sheetError) {
+      console.error('Error appending call log to Google Sheet:', sheetError)
     }
 
-    const { data, error } = await supabase.from('activities').insert([activity]).select()
-
-    if (error) {
-      console.error('Error saving call status activity:', error)
-      return NextResponse.json({ error: error.message || 'Failed to save activity' }, { status: 500 })
-    }
-
-    return NextResponse.json({ data })
+    return NextResponse.json({ success: true, callId: resolvedCallId })
   } catch (error: unknown) {
     console.error('Error in call-status webhook:', error)
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'

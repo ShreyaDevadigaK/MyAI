@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import Image from 'next/image'
 import { Navbar } from '@/components/Navbar'
 import { ComprehensiveFooter } from '@/components/ComprehensiveFooter'
 import { Button } from '@/components/ui/button';
@@ -37,9 +38,11 @@ function BlogPage() {
                 key={slug}
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
               >
-                <img
+                <Image
                   src={post.image}
                   alt={post.title}
+                  width={800}
+                  height={384}
                   className="h-48 w-full object-cover"
                 />
                 <div className="p-5">

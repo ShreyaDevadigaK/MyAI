@@ -11,7 +11,6 @@ import CallTransfersEditor from "@/components/CallTransfersEditor";
 import AgentConfiguration from "../agent-configuration/page";
 import { useRouter } from "next/navigation";
 import { useSelectedVoice } from '@/context/SelectedVoiceContext'
-import { useCallActivity } from '@/context/CallActivityContext'
 import { useSearchParams } from 'next/navigation'
 
 // const voices = [

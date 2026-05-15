@@ -2,11 +2,10 @@
 
 import { Navbar } from "@/components/Navbar"
 import { ComprehensiveFooter } from "@/components/ComprehensiveFooter"
-import { Volume2 } from "lucide-react"
-import { Zap, Mic, Phone, Users, Building } from "lucide-react";
+import { Volume2, Mic, CalendarDays } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import VoiceLibrarySection from "@/components/VoiceLibrarySection"
-import { CalendarDays } from "lucide-react"
+import Image from "next/image";
 import { useRouter } from "next/navigation"
 
 // export default function VoicesPage() {
@@ -107,10 +106,12 @@ const MyAiPageVoices = () => {
         <section className="bg-gray-100 dark:bg-gray-800 py-8 px-6 lg:px-8">
           <div className="mx-auto w-full max-w-7xl text-center">
             <div className="relative w-full overflow-hidden rounded-xl shadow-lg h-24 md:h-28 lg:h-32">
-              <img
+              <Image
                 src="/images/audio.gif"
                 alt="Audio wave animation"
-                className="w-full h-full object-cover opacity-80"
+                fill
+                className="object-cover opacity-80"
+                priority
               />
             </div>
           </div>

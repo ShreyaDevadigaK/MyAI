@@ -11,7 +11,7 @@ if (!SPREADSHEET_ID || !GOOGLE_SERVICE_ACCOUNT_CREDENTIALS) {
 let credentials;
 try {
   credentials = JSON.parse(GOOGLE_SERVICE_ACCOUNT_CREDENTIALS);
-} catch (e) {
+} catch {
   console.error('Invalid JSON in GOOGLE_SERVICE_ACCOUNT_CREDENTIALS');
 }
 

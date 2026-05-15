@@ -9,25 +9,16 @@ import { useRouter } from 'next/navigation';
 
 import {
   Phone,
-  FileText,
   Clock,
-  ArrowRight,
   Wrench,
   MessageSquare,
   CalendarCheck,
-  Scale,
   Briefcase,
   AlertTriangle,
   DollarSign,
   Users,
 
 } from "lucide-react"
-
-interface IndustryPageProps {
-  params: {
-    slug: string
-  }
-}
 
 interface IndustryInfo {
   title: string
@@ -775,4 +766,3 @@ export default function IndustryPage() {
     </div>
   );
 }
-

@@ -94,6 +94,11 @@ const ChooseVoicePage: React.FC = () => {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">Choose a voice for your AI</h2>
         <p className="text-gray-600 mb-6">Select a voice that best represents your brand.</p>
+        {error && (
+          <p className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+            {error}
+          </p>
+        )}
 
         {/* Custom Dropdown */}
         <div className="mb-6">

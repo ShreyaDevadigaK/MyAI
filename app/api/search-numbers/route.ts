@@ -112,9 +112,6 @@ export async function GET(request: Request) {
   const country = searchParams.get('country') || 'US';
   const type = searchParams.get('type') || 'Local';
   const areaCode = searchParams.get('areaCode');
-  const smsEnabled = searchParams.get('smsEnabled') === 'true';
-  const mmsEnabled = searchParams.get('mmsEnabled') === 'true';
-  const voiceEnabled = searchParams.get('voiceEnabled') === 'true';
 
   try {
     let availableNumbers;

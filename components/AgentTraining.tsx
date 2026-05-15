@@ -165,7 +165,7 @@ Let me know if you'd like this adapted to a **chatbot script**, **email-based fl
     }
 
     fetchGuide()
-  }, [])
+  }, [fallbackGuide])
 
   const handleSave = async () => {
     try {

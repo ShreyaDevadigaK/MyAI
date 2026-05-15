@@ -30,7 +30,7 @@ function createUltravoxCall(ultravoxCallConfig: Record<string, unknown>) {
           } else {
             reject(new Error(`Ultravox API error (${response.statusCode}): ${data}`));
           }
-        } catch (parseError) {
+        } catch {
           reject(new Error(`Failed to parse Ultravox response: ${data}`));
         }
       });

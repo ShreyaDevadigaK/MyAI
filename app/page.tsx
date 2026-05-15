@@ -1,15 +1,14 @@
 "use client"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Play } from "lucide-react"
 import { Phone, Clock, Users, Star, ArrowRight, Sparkles, Zap, Shield } from "lucide-react"
 import { FAQSection } from "@/components/FaqSection"
 import { ComprehensiveFooter } from "@/components/ComprehensiveFooter"
 import { Navbar } from "@/components/Navbar"
-import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 
 export default function HomePage() {
-  const { user } = useUser();
   const router = useRouter()
 
   return (
@@ -104,9 +103,11 @@ export default function HomePage() {
 
               <div className="relative">
                 <div className="relative">
-                  <img
-                    src="images/aidashboard1.jpg"
+                  <Image
+                    src="/images/aidashboard1.jpg"
                     alt="Modern Office with AI Technology"
+                    width={1200}
+                    height={800}
                     className="w-full h-auto rounded-3xl shadow-2xl"
                   />
 
@@ -884,5 +885,4 @@ export default function HomePage() {
 //     </div>
 //   )
 // }
-
 

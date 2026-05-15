@@ -22,6 +22,9 @@ function createUltravoxCall(ultravoxCallConfig: Record<string, unknown>) {
     let data = ''
     request.on('response', (response) => {
       response.on('data', (chunk) => (data += chunk))
+      request.on('error', (error) => {
+        reject(new Error(`Network error calling Ultravox: ${error.message}`))
+      })
       response.on('end', () => {
         try {
           const parsedData = JSON.parse(data)
@@ -30,7 +33,7 @@ function createUltravoxCall(ultravoxCallConfig: Record<string, unknown>) {
           } else {
             reject(new Error(`Ultravox API error (${response.statusCode}): ${data}`))
           }
-        } catch (parseError) {
+        } catch {
           reject(new Error(`Failed to parse Ultravox response: ${data}`))
         }
       })
@@ -46,7 +49,7 @@ function createUltravoxCall(ultravoxCallConfig: Record<string, unknown>) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { prompt, phoneNumber, voice, transferNumbers, greeting } = body
+    const { prompt, phoneNumber, voice, transferNumbers, greeting, userId } = body
 
     if (!prompt || !phoneNumber) {
       return NextResponse.json({ error: 'Missing prompt or phoneNumber' }, { status: 400 })
@@ -89,7 +92,7 @@ Available transfer numbers: ${transferNumbersList}
     // Configure Ultravox Call
     const ULTRAVOX_CALL_CONFIG = {
       systemPrompt,
-      model: 'fixie-ai/ultravox',
+      model: 'ultravox-v0.7',
       voice: voice || 'f0ed7e07-0e85-4853-a8f5-e09c627cf944',
       temperature: 0.4,
       firstSpeakerSettings: { 
@@ -99,6 +102,11 @@ Available transfer numbers: ${transferNumbersList}
         }
       },
       medium: { twilio: {} },
+      callbacks: {
+        ended: {
+          url: `${toolBaseUrl}/api/call-status/${userId || 'unknown'}`
+        }
+      },
       selectedTools: [
         {
           temporaryTool: {
@@ -121,7 +129,7 @@ Available transfer numbers: ${transferNumbersList}
               { name: "call_state", location: "PARAMETER_LOCATION_BODY", knownValue: "KNOWN_PARAM_CALL_STATE" }
             ],
             http: {
-              baseUrlPattern: `${toolBaseUrl}/api/google-calendar/schedule`,
+              baseUrlPattern: `${toolBaseUrl}/api/google-calendar/schedule/${userId || 'unknown'}`,
               httpMethod: "POST"
             }
           }
@@ -147,7 +155,7 @@ Available transfer numbers: ${transferNumbersList}
               { name: "call_state", location: "PARAMETER_LOCATION_BODY", knownValue: "KNOWN_PARAM_CALL_STATE" }
             ],
             http: {
-              baseUrlPattern: `${toolBaseUrl}/api/google-calendar/reschedule`,
+              baseUrlPattern: `${toolBaseUrl}/api/google-calendar/reschedule/${userId || 'unknown'}`,
               httpMethod: "POST"
             }
           }
@@ -173,7 +181,7 @@ Available transfer numbers: ${transferNumbersList}
               { name: "call_state", location: "PARAMETER_LOCATION_BODY", knownValue: "KNOWN_PARAM_CALL_STATE" }
             ],
             http: {
-              baseUrlPattern: `${toolBaseUrl}/api/google-calendar/cancel`,
+              baseUrlPattern: `${toolBaseUrl}/api/google-calendar/cancel/${userId || 'unknown'}`,
               httpMethod: "POST"
             }
           }
@@ -216,12 +224,10 @@ Available transfer numbers: ${transferNumbersList}
       return NextResponse.json({ error: 'No joinUrl received from Ultravox API' }, { status: 500 })
     }
 
-    const userId = body.userId
-
     // Step 5: Initiate Twilio Call, with status callback when the call ends
     const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
     const statusCallback = userId
-      ? `${toolBaseUrl}/api/call-status?userId=${encodeURIComponent(userId)}`
+      ? `${toolBaseUrl}/api/call-status/${encodeURIComponent(userId)}?ultravoxCallId=${ultravoxResponse.callId}`
       : undefined
 
     const call = await client.calls.create({
@@ -234,20 +240,6 @@ Available transfer numbers: ${transferNumbersList}
         statusCallbackMethod: 'POST'
       } : {}),
     })
-
-    // return NextResponse.json({
-    //   message: 'Call initiated successfully',
-    //   callSid: call.sid,
-    //   to: phoneNumber
-    // })
-
-    
-    // const call = await client.calls.create({
-    //   twiml: `<Response><Connect><Stream url="${ultravoxResponse.joinUrl}"/></Connect></Response>`,
-    //   to: phoneNumber,
-    //   from: TWILIO_PHONE_NUMBER,
-    // })
-
 
     // Store the mapping
     storeCallMapping(ultravoxResponse.callId, call.sid)
@@ -267,66 +259,3 @@ Available transfer numbers: ${transferNumbersList}
     return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
-
-
-
-
-// {{
-// JSON.stringify({
-//   "temperature": 0.4,
-//   "medium": { "twilio": {} },
-//   "voice": "f0ed7e07-0e85-4853-a8f5-e09c627cf944",
-//   "systemPrompt": $json.output
-//     .replace(/\n/g, '\\n')
-//     .replace(/"/g, '\\"')
-//     + "\\n\\n"
-//     + "WHATSAPP TOOL USAGE:\\n"
-//     + "When user says: 'send this in whatsapp: Hello world'\\n"
-//     + "You should: Immediately call whatsapp_webhook with message='Full conversation summary' and the conversation_history will automatically include all messages\\n"
-//     + "When user says: 'whatsapp this message please'\\n"
-//     + "You should: Call whatsapp_webhook with the message they want to send\\n"
-//     + "Always call the tool immediately without asking for confirmation.",
-//   "selectedTools": [
-//     {
-//       "toolId": "56294126-5a7d-4948-b67d-3b7e13d55ea7"
-//     },
-//     {
-//       "temporaryTool": {
-//         "modelToolName": "whatsapp_webhook",
-//         "description": "Sends a WhatsApp message via webhook. Use this tool immediately when the user requests to send something via WhatsApp, such as when they say 'send this in whatsapp', 'whatsapp this message', or similar phrases. The tool should be called without asking for confirmation.",
-//         "dynamicParameters": [
-//           {
-//             "name": "message",
-//             "location": "PARAMETER_LOCATION_BODY",
-//             "schema": {
-//               "type": "string",
-//               "description": "The complete message content to send via WhatsApp. Include everything the user wants to send."
-//             },
-//             "required": true
-//           }
-//         ],"automaticParameters": [
-//   {
-//     "name": "conversation_history",
-//     "location": "PARAMETER_LOCATION_BODY",
-//     "knownValue": "KNOWN_PARAM_CONVERSATION_HISTORY"
-//   },
-//   {
-//     "name": "call_id",
-//     "location": "PARAMETER_LOCATION_BODY",
-//     "knownValue": "KNOWN_PARAM_CALL_ID"
-//   },
-//   {
-//     "name": "call_state",
-//     "location": "PARAMETER_LOCATION_BODY",
-//     "knownValue": "KNOWN_PARAM_CALL_STATE"
-//   }
-// ],
-//         "http": {
-//           "baseUrlPattern": "https://flows.pacewisdom.in/webhook/94d3be13-efb2-4c02-9990-04a3bb8a040f",
-//           "httpMethod": "POST"
-//         }
-//       }
-//     }
-//   ]
-// })
-// }}

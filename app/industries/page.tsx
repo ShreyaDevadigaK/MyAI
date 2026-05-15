@@ -3,7 +3,6 @@
 
 import { Navbar } from "@/components/Navbar"
 import { ComprehensiveFooter } from "@/components/ComprehensiveFooter"
-import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 
 const industryData = {
