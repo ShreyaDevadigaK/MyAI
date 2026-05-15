@@ -58,3 +58,9 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=
 - **Auth**: Clerk
 - **Voice**: Twilio + Ultravox AI
 - **Integrations**: Google Calendar, Google Sheets
+
+## 📖 Testing
+
+See documentation files for Postman testing:
+- `POSTMAN_QUICK_GUIDE.md` - API testing guide
+- `TESTING_CHECKLIST.md` - Verification steps
